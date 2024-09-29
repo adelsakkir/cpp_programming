@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "lib_myprint.h": "c",
+        "stdio.h": "c"
+    }
+}

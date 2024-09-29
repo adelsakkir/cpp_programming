@@ -1,0 +1,16 @@
+# Variables
+CC = gcc
+IDIR = inc
+LDIR = lib
+CFLAGS = -I../$(IDIR)
+LFLAGS = -L../$(LDIR)
+
+# Macros
+DEPS =
+
+# Rules
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+myApp: myApp.o
+	$(CC) -o myApp myApp.o -l_mylib $(LFLAGS)

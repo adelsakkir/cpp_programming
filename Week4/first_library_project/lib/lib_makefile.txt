@@ -1,0 +1,39 @@
+# Variables
+CC = gcc
+AR = AR
+
+SDIR = src #./ can use, but not necessary
+IDIR =../inc #This is a relative path. The .. means "go up one directory" (to the parent directory)
+ODIR = obj
+CFLAGS = -I$(IDIR)
+LFLAGS = -L.
+AFLAGS = rcs
+
+#Macros
+_DEPS = lib_myMath.h libmyPrint.h #Dependencies
+DEPS = $(patsubt %,$(IDIR)/%, $(_DEPS)) #pattern substitution function is used to prepend the $(IDIR) directory path to each header file in _DEPS
+#DEPS = ../inc/lib_myMath.h ../inc/libmyPrint.h
+
+
+_SRC = lib_myMath.c lib_myPrint.c
+SRC = $(patsubt %,$(SDIR)/%, $(_SRC))
+#SRC = src/lib_myMath.c src/lib_myPrint.c
+
+_OBJ = lib_myMath.o lib_myPrint.o
+OBJ = $(patsubt %,$(ODIR)/%, $(_OBJ))
+#OBJ = obj/lib_myMath.o obj/lib_myPrint.o
+
+
+#Rules  
+
+#Rule 1 -  a rule in a Makefile for building object files from C source files
+$(ODIR)/%.o: $(SDIR)/%.c $(DEPS) #This represents additional dependencies (like header files) that the source file depends on. These dependencies will trigger a rebuild if they change.
+    $(CC) -c -o $@ $< $(CFLAGS) -I.  #Recipe $<-It is automatically set by make to the first file listed in the prerequisites
+#tab space above
+
+
+%.o: $(SDIR)/%.c $(DEPS)
+    $(CC) -c -o $@ $< $(CFLAGS)
+
+lib_mylib.a: $(OBJ)
+    $(AR) $(AFLAGS) -o $@ $^     # $^ is another automatic variable used in rules. It represents all the prerequisites of a rule, with duplicates removed and separated by spaces
