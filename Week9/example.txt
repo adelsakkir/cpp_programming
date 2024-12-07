@@ -1,0 +1,2 @@
+This is line 1 using \n.
+This is line 2 using endl.
